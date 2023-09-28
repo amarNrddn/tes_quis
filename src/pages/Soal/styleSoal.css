@@ -1,0 +1,33 @@
+.container_soal {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.lembar_soal {
+    max-width: 500px;
+    background-color: aqua;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px;
+    border-radius: 8px;
+    -webkit-box-shadow: 4px 10px 20px -3px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 4px 10px 20px -3px rgba(0, 0, 0, 0.75);
+    box-shadow: 4px 10px 20px -3px rgba(0, 0, 0, 0.75);
+}
+
+.pertanyaan {
+    padding-left: 10px;
+}
+
+.pilihan {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    list-style: none;
+}

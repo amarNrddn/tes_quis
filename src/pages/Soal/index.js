@@ -1,19 +1,62 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import './styleSoal.css'
 
 const Soal = () => {
-    const [soal, setSoal] = useState([])
+  const [pertanyaan, setpertanyaan] = useState([]);
+  const [pertanyaanSaatini, setpertanyaanSaatini] = useState(0);
+  const [nilai, setnilai] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
 
-    const getSoal = async() => {
-        const res = await axios.get('https://opentdb.com/api.php?amount=5&category=27&difficulty=medium&type=multiple')
-        console.log(res)
+  const getApi = () => {
+    axios
+      .get("https://opentdb.com/api.php?amount=5&#38;category=9&#38;difficulty=easy&#38;type=multiple")
+      .then((response) => {
+        const data = response.data.results;
+        setpertanyaan(data);
+      });
+  }
+
+  useEffect(() => {
+    getApi()
+  }, []);
+
+  const hendelePertanyaan = (isCorrect) => {
+    if (isCorrect) {
+      setnilai(nilai + 1);
     }
 
-    useEffect(() => {
-        getSoal()
-    }, [])
+    const nextQuestion = pertanyaanSaatini + 1;
+    if (nextQuestion < pertanyaan.length) {
+      setpertanyaanSaatini(nextQuestion);
+    } else {
+      setGameOver(true);
+    }
+  };
   return (
-    <div>Selamat mengerjakan</div>
+    <div className="container_soal">
+      {gameOver ? (
+        <div className="game-over">
+          <h2>Trimakasih sudah mengerjakan</h2>
+          <h3>Anda mendapat: {nilai} Secore</h3>
+        </div>
+      ) : (
+        <div className='lembar_soal'>
+          <h2 className='pertanyaan'>{pertanyaan[pertanyaanSaatini] && pertanyaan[pertanyaanSaatini].question}</h2>
+          <ul className='pilihan'>
+            {pertanyaan[pertanyaanSaatini] &&
+              pertanyaan[pertanyaanSaatini].incorrect_answers.map((answer, index) => (
+                <li key={index}>
+                  <button onClick={() => hendelePertanyaan(false)}>{answer}</button>
+                </li>
+              ))}
+            <li>
+              <button onClick={() => hendelePertanyaan(true)}>{pertanyaan[pertanyaanSaatini] && pertanyaan[pertanyaanSaatini].correct_answer}</button>
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
   )
 }
 
